@@ -1,2 +1,3 @@
-require_relative './trains'
+require_relative './train'
 require_relative './station'
+require_relative './route'
