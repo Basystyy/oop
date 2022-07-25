@@ -33,4 +33,5 @@ class Station
   def view_passenger
     @list & Train.passenger_train
   end
+  
 end

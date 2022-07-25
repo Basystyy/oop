@@ -32,4 +32,5 @@ class Route
   def view_statitons
     puts @route_list
   end
+  
 end

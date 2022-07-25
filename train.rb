@@ -71,4 +71,5 @@ class Train
     end
     
     puts "#{previous_st}; #{@name_station}; #{next_st}"
+    
 end
