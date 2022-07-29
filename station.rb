@@ -1,37 +1,27 @@
 class Station
-  
-  attr_accessor :list
 
-  def initialize(name_station)
-    @name_station = name_station
-    @list = []
-    @list_stations = []
-    @list_stations << name_station if @list_stations.!include?(name_station)
+  attr_accessor :trains
+  
+  def initialize(name)
+    @name = name
+    @trains = []
+    @train = nil
   end
 
-  def take_train(name_train)
-    if Train.cargo_train.include?(name_train)
-      @list << name_train
-      if Train.passenger_train.include?(name_train)
-        @list << name_train
-      end
+  def take(train)
+    @train = train
+    trains << train
+  end
+
+  def send(train)
+    @train = train
+    trains.delete(train)
+  end
+
+  def view
+    trains.each do |train|
+      puts train.name
     end
   end
 
-  def send_train(name_train)
-    @list.delete(name_train) if @list.include?(name_train)
-  end
-
-  def view_all
-    @list
-  end
-
-  def view_cargo
-    @list & Train.cargo_train
-  end
-
-  def view_passenger
-    @list & Train.passenger_train
-  end
-  
 end
