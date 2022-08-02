@@ -5,7 +5,6 @@ class Station
   def initialize(name)
     @name = name
     @trains = []
-    @train = nil
   end
 
   def take(train)
@@ -18,10 +17,22 @@ class Station
     trains.delete(train)
   end
 
-  def view
+  def view_all
     trains.each do |train|
-      puts train.name
+      puts train.number
     end
   end
+
+  def view_cargo
+    trains.each do |train|
+      puts train.number if train.type = :cargo
+    end
+  end
+
+  def view_passenger
+    trains.each do |train|
+      puts train.number if train.type = :passenger
+    end
+  end 
 
 end
