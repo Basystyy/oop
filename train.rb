@@ -1,12 +1,15 @@
 class Train
-  attr_reader :station, :route
-  attr_accessor :speed, :number
+  attr_reader :station, :route, :number, :speed
   
   def initialize(number, type, wagons_qty)
     @speed = 0
     @number = number
     @type = type
     @wagons_qty = wagons_qty
+  end
+
+  def speed_up(delta)
+    @speed += delta
   end
 
   def break
@@ -31,35 +34,30 @@ class Train
     @station.take(self)
   end
 
+  def index
+    index = @route.stations.index(@station)
+  end
+  
   def forward
-  index = @route.stations.index(@station)
     if @station != @route.stations.last
-      index += 1
+      @index += 1
       @station.send(self)
-      @station = @route.stations[index]
+      @station = @route.stations[@index]
       @station.take(self)
     end
   end
 
   def ahead
-    index = @route.stations.index(@station)
     if @station != @route.stations.first
-      index -= 1
+      @index -= 1
       @station.send(self)
-      @station = @route.stations[index]
+      @station = @route.stations[@index]
       @station.take(self)
     end
   end
 
   def prev_station
-    index = route.stations.index(@station)
-    puts "Please, enter 1 for view previous station or 2 for go to previous station"
-    act = gets.chomp.to_i
-    if @station != @route.stations.first
-      index -= 1
-      return @route.stations[index] if act == 1
-      self.ahead if act == 2
-    end
+    @route.stations[@index - 1]
   end
 
   def current_station
@@ -67,13 +65,7 @@ class Train
   end
 
   def next_station
-    index = @route.stations.index(@station)
-    puts "Please, enter 1 for view next station or 2 for go to next station"
-    act = gets.chomp.to_i
-    if @station != @route.stations.last
-      index += 1
-      return @route.stations[index] if act == 1
-      self.forward if act == 2
-    end
+    @route.stations[@index + 1] 
   end
+
 end

@@ -19,4 +19,10 @@ class Route
     end
   end
 
+  def view
+    @stations.each do |name|
+      puts @stations.name
+    end
+  end
+  
 end

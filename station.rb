@@ -1,6 +1,6 @@
 class Station
 
-  attr_accessor :trains
+  attr_reader :trains
   
   def initialize(name)
     @name = name
@@ -8,12 +8,10 @@ class Station
   end
 
   def take(train)
-    @train = train
     trains << train
   end
 
   def send(train)
-    @train = train
     trains.delete(train)
   end
 
