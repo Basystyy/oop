@@ -21,11 +21,9 @@ class Train
   end
 
   def delete
-    if speed.zero?
-      if @wagons_qty >= 1
-        @wagons_qty -= 1
-      end
-    end
+    return unless speed.zero?
+    return if @wagons_qty < 1
+    @wagons_qty -= 1
   end
 
   def change(route)
@@ -35,29 +33,27 @@ class Train
   end
 
   def index
-    index = @route.stations.index(@station)
+    @route.stations.index(@station)
   end
   
   def forward
     if @station != @route.stations.last
-      @index += 1
       @station.send(self)
-      @station = @route.stations[@index]
+      @station = @route.stations[index + 1]
       @station.take(self)
     end
   end
 
   def ahead
     if @station != @route.stations.first
-      @index -= 1
       @station.send(self)
-      @station = @route.stations[@index]
+      @station = @route.stations[index - 1]
       @station.take(self)
     end
   end
 
   def prev_station
-    @route.stations[@index - 1]
+    @route.stations[index - 1]
   end
 
   def current_station
@@ -65,7 +61,7 @@ class Train
   end
 
   def next_station
-    @route.stations[@index + 1] 
+    @route.stations[index + 1] 
   end
 
 end
