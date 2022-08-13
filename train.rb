@@ -1,11 +1,11 @@
 class Train
-  attr_reader :station, :route, :number, :speed
+  attr_reader :station, :route, :number, :speed, :wagons
   
-  def initialize(number, type, wagons_qty)
+  def initialize(number, type)
     @speed = 0
     @number = number
     @type = type
-    @wagons_qty = wagons_qty
+    @wagons = []
   end
 
   def speed_up(delta)
@@ -13,42 +13,28 @@ class Train
   end
 
   def break
-    @speed = 0
-  end
-
-  def add
-    @wagons_qty += 1 if speed.zero?
-  end
-
-  def delete
-    return unless speed.zero?
-    return if @wagons_qty < 1
-    @wagons_qty -= 1
+    @speed = zero
   end
 
   def change(route)
     @route = route
-    @station = route.stations.first
-    @station.take(self)
-  end
-
-  def index
-    @route.stations.index(@station)
+    @station = route.first
+    take
   end
   
   def forward
-    if @station != @route.stations.last
-      @station.send(self)
+    if @station != route.last
+      send
       @station = @route.stations[index + 1]
-      @station.take(self)
+      take
     end
   end
 
   def ahead
-    if @station != @route.stations.first
-      @station.send(self)
+    if @station != route.first
+      send
       @station = @route.stations[index - 1]
-      @station.take(self)
+      take
     end
   end
 
@@ -62,6 +48,39 @@ class Train
 
   def next_station
     @route.stations[index + 1] 
+  end
+
+  def add(wagon)
+    verify_speed
+    verify_type
+    wagons << wagon
+  end
+
+  def delete(wagon)
+    verify_speed
+    wagons delete(wagon) if wagons.include?(wagon)
+  end
+
+  private
+  #используется только в этом классе  
+  def index
+    @route.stations.index(@station)
+  end
+
+  def take
+    @station.take(self)
+  end
+
+  def send
+    @station.send(self)
+  end
+
+  def verify_speed
+    return unless speed.zero?
+  end
+
+  def verify_type
+    return if type == wagon.type
   end
 
 end

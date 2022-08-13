@@ -5,16 +5,24 @@ class Route
     @name = name
     @stations = [start, last]
   end
+  
+  def first
+    @stations.first
+  end
+
+  def last
+    @stations.last
+  end
 
   def add(station, number)
-    if @stations.index(@stations.last) >= (number - 2) && number >= 1
+    if @stations.index(last) >= (number - 1) && number >= 1
       index = number - 1
       @stations.insert(index, station)
     end
   end
 
   def delete(station)
-    if station != @stations.last || station != @stations.first
+    if station != last || station != first
       @stations.delete(station)
     end
   end
@@ -24,5 +32,5 @@ class Route
       puts @stations.name
     end
   end
-  
+
 end

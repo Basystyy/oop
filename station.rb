@@ -17,7 +17,7 @@ class Station
 
   def view_all
     trains.each do |train|
-      puts train.number
+      puts "#{train.number} - #{train.type}"
     end
   end
 
