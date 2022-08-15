@@ -1,6 +1,6 @@
 class Cargo
   
-  def initialize(name)
+  def initialize(number)
     @type = :cargo
   end
 

@@ -1,6 +1,6 @@
 class Passenger
 
-  def initialize(name)
+  def initialize(number)
     @type = :passenger
   end
     

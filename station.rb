@@ -6,7 +6,7 @@ class Station
     @name = name
     @trains = []
   end
-
+  
   def take(train)
     trains << train
   end

@@ -1,10 +1,9 @@
 class Train
   attr_reader :station, :route, :number, :speed, :wagons
   
-  def initialize(number, type)
+  def initialize(number)
     @speed = 0
     @number = number
-    @type = type
     @wagons = []
   end
 
@@ -51,18 +50,18 @@ class Train
   end
 
   def add(wagon)
-    verify_speed
-    verify_type
+    return if verify_speed
+    return if verify_type
     wagons << wagon
   end
 
   def delete(wagon)
-    verify_speed
+    return if verify_speed
     wagons delete(wagon) if wagons.include?(wagon)
   end
 
   private
-  #используется только в этом классе  
+  #используется только в этом классе
   def index
     @route.stations.index(@station)
   end
@@ -76,11 +75,11 @@ class Train
   end
 
   def verify_speed
-    return unless speed.zero?
+    !speed.zero?
   end
 
   def verify_type
-    return if type == wagon.type
+    type != wagon.type
   end
 
 end
