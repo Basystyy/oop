@@ -28,8 +28,8 @@ class Route
   end
 
   def view
-    @stations.each do |name|
-      puts @stations.name
+    @stations.each.with_index do |name, index|
+      puts "#{index} - - #{name}"
     end
   end
 

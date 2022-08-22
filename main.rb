@@ -8,11 +8,9 @@ require_relative './passenger_wagon'
 
 class Menu
   def initialize
-    @menu_1_1 = 0
-    @menu_2_3 = 0
-    @menu_3_4 = 0
-    @menu_6_2 = 0
-    @stations_list = []
+    @stations = []
+    @trains = []
+    @routes = []
   end    
 
   #menu_0 стартовое меню
@@ -26,145 +24,140 @@ class Menu
     puts "Нажмите 7, чтобы отцепить СУЩЕСТВУЮЩИЙ ПРИЦЕПЛЕННЫЙ вагон от поезда"
     puts "Нажмите 8, чтобы пенреместить СУЩЕСТВУЮЩИЙ поезд по НАЗНАЧЕНННОМУ маршруту"
     puts "нажмите 9, чтобы просмотреть список станций или список поездов на станции"
-    menu_0 = gets.chomp
-    add_station if menu_0 = 1
-    add_train if menu_0 = 2
-    add_route if menu_0 = 3
-    change_route if menu_0 = 4
-    ass_route if menu_0 = 5
-    add_wagon if menu_0 = 6
-    del_wagon if menu_0 = 7
-    run_train if menu_0 = 8
-    view if menu_0 = 9
+    menu_0 = gets.chomp.to_i
+    add_station if menu_0 == 1
+    add_train if menu_0 == 2
+    add_route if menu_0 == 3
+    change_route if menu_0 == 4
+    ass_route if menu_0 == 5
+    add_wagon if menu_0 == 6
+    del_wagon if menu_0 == 7
+    run_train if menu_0 == 8
+    view if menu_0 == 9
   end
 
   #menu_1 добавить станцию
   def add_station
-    puts "Внимание! Объект станции форимуется как 'st_' с добавлением следующего порядкового номера"
-    @menu_1_1 += 1
-    obj_station = "#{'st_'} + #{@menu_1_1.to_s}"
     puts "Введите название станции"
-    menu_1_2 = gets.chomp
-    obj_station = Station.new(menu_1_2)
-    @stations_list << obj_station
+    @stations << Station.new(gets.chomp)
     menu
   end
 
   #menu_2 добавить поезд
   def add_train
-    puts "Внимание! Объект поезда форимуется как 'tr_' с добавлением следующего порядкового номера"
     puts "Введите 1 для создания пассажирского, или 2 для создания грузового поезда"
-    menu_2_1 = gets.chomp
+    flag = gets.chomp.to_i
     puts "Введите номер поезда"
-    menu_2_2 = gets.chomp
-    @menu_2_3 += 1
-    obj_train = "#{'tr_'} + #{@menu_2_3.to_s}"
-    obj_train = Passenger_train.new(menu_2_2) if menu_2_1 == 1
-    obj_train = Cargo_train.new(menu_2_2) if menu_2_1 == 2
+    number = gets.chomp
+    @trains << Passenger_train.new(number) if flag == 1
+    @trains << Cargo_train.new(number) if flag == 2
     menu
   end
 
   #menu_3 создать маршрут
   def add_route
-    puts "Внимание! Объект маршрута форимуется как 'rt_' с добавлением следующего порядкового номера"
     puts "Введите название маршрута"
-    menu_3_1 = gets.chomp
-    puts "Введите начальную станцию"
-    menu_3_2 = gets.chomp
-    puts "Введите конечную станцию"
-    menu_3_3 = gets.chomp
-    @menu_3_4 += 1
-    obj_route = "#{'rt_'} + #{@menu_3_4.to_s}"
-    obj_route = Route.new(menu_3_1, menu_3_2, menu_3_3)
+    name = gets.chomp
+    st_select
+    puts "Введите порядковый номер начальной станции"
+    start = @stations[gets.chomp.to_i - 1]
+    puts "Введите порядковый номер конечной станции"
+    last = @stations[gets.chomp.to_i - 1]
+    @routes << Route.new(name, start, last)
     menu
   end
 
   #menu_4 изменить маршрут
   def change_route
-    puts "Введите СУЩЕСТВУЮЩИЙ маршрут"
-    menu_4_1 = gets.chomp
-    puts "Нажмите 1 для добавления станции, или 2 для удаления станции"
-    menu_4_2 = gets.chomp
-    puts "Введите СУЩЕСТВУЮЩУЮ станцию"
-    menu_4_3 = gets.chomp
-    if menu_4_2 == 1
-      puts "Введите порядковый номер станции в маршруте"
-      menu_4_4 = gets.chomp.to_i
-      menu_4_1.add(menu_4_3, menu_4_4)
-    end
-    if menu_4_3 == 2
-      if menu_4_1.stations.include?(menu_4_3)
-        menu_4_1.delete(menu_4_3)
-      end
-    end
+    rt_select
+    route.view
+    st_select
+    puts "Введите порядковый номер добавляемой станции (кроме первой и последней)"
+    flag = gets.chomp.to_i - 1
+    station = @stations[flag]
+    route.add(station, flag)
     menu
   end
 
   #menu_5 назначить маршрут
   def ass_route
-    puts "Введите СУЩЕСТВУЮЩИЙ поезд"
-    menu_5_1 = gets.chomp
-    puts "Введите СУЩЕСТВУЮЩИЙ маршрут"
-    menu_5_2 = gets.chomp
-    puts "ВНИМАНИЕ!!! поезд будет помещен на первую станцию маршрута!"
-    menu_5_2.change(menu_5_1)
+    tr_select
+    rt_select
+    train.change(route)
     menu
   end
 
   #menu_6 добавить вагон
   def add_wagon
-    puts "Введите СУЩЕСТВУЮЩИЙ поезд"
-    menu_6_1 = gets.chomp
-    @menu_6_2 += 1
-    obj_wagon = "#{'wg_'} + #{@menu_6_2.to_s}"
-    obj_wagon = Cargo.new if menu_6_1.type == :cargo
-    obj_wagon = Passenger.new if menu_6_1.type == :passenger
-    speed = menu_6_1.speed
-    menu_6_1.break
-    menu_6_1.add(obj_wagon)
-    menu_6_1.speed_up(speed)
+    tr_select
+    type = train.type
+    speed = train.speed
+    train.break
+    train.add(Cargo.new) if type == :cargo
+    train.add(Passenger.new) if type == :passenger
+    train.speed_up(speed)
     menu
   end
 
   #menu_7 удалить вагон
   def del_wagon
-    puts "Введите СУЩЕСТВУЮЩИЙ поезд"
-    menu_7_1 = gets.chomp
-    puts "Введите СУЩЕСТВУЮЩИЙ ПРИЦЕПЛЕННЫЙ вагон"
-    menu_7_2 = gets.chomp
-    speed = menu_7_1.speed
-    menu_7_1.break
-    menu_7_1.delete(menu_7_2)
-    menu_7_1.speed_up(speed)
+    tr_select
+    type = train.type
+    speed = train.speed
+    train.break
+    train.wagons.each.with_index(1) do |index, name|
+      puts "#{index} - - #{name}"
+    end
+    puts "Введите порядковый номер удаляемого вагона"
+    wagon = train.wagons[gets.chomp.to_i - 1]
+    train.speed_up(speed)
     menu
   end
 
   #menu_8 перемещение поезда по маршруту
   def run_train
-    puts "Введите СУЩЕСТВУЮЩИЙ поезд"
-    menu_8_1 = gets.chomp
-    puts "Введите 1 для движения вперед или 2 - для движения назад по маршруту"
-    menu_8_2 = gets.chomp
-    menu_8_1.forward if menu_8_2 == 1
-    menu_8_1.ahead if menu_8_2 == 2
+    tr_select
+    puts "Введите 1 для перемещения вперед, ил 2 - для перемещения назад по маршруту"
+    train.forward if gets.chomp.to_i == 1
+    train.ahead if gets.chomp.to_i == 2
     menu
   end
 
   #menu_9 просмотр станций и поездов на них
   def view
-    puts "Введите 1 для просмотра списка существующих станций или 2 для просмотра списка поездов на любой из них"
-    menu_9_1 = gets.chomp
-    if menu_9_1 == 1
-      each @stations_list do |station|
-        puts "#{station} - #{station.name}"
-      end
-    end
-    if menu_9_1 == 2
-      puts "Введите СУЩЕСТВУЮЩУЮ станцию"
-      menu_9_2 = gets.chomp
-      menu_9_2.view_all
-    end
+    st_select
+    puts "Введите порядковый номер станции"
+    station = @stations[gets.chomp.to_i - 1]
+    station.view_all
     menu
   end
+
+  private
+  def st_select
+    @stations.each.with_index(1) do |name, index|
+      puts "#{index} - - #{name.name}"
+    end
+  end
+
+  def rt_select
+    @routes.each.with_index(1) do |name, index|
+      puts "#{index} - - #{name.name}"
+    end
+    puts "Введите порядковый номер маршрута"
+    route = @routes[gets.chomp.to_i - 1]
+    puts route.name
+  end
+
+  def tr_select
+    @trains.each.with_index(1) do |name, index|
+      puts "#{index} - - #{name.name}"
+    end
+    puts "Введите порядковый номер поезда"
+    train = @trains[gets.chomp.to_i - 1]
+    puts train.name
+  end
+
+  start = Menu.new
+  start.menu
 
 end
