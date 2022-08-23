@@ -1,5 +1,5 @@
 class Route
-  attr_reader :stations, :name
+  attr_reader :stations, :name, :view
 
   def initialize(name, start, last)
     @name = name
@@ -28,8 +28,9 @@ class Route
   end
 
   def view
-    @stations.each.with_index do |name, index|
-      puts "#{index} - - #{name}"
+    puts "Перечень станций в маршруте:"
+    @stations.each.with_index(1) do |name, index|
+      puts "#{index} - - #{name.name}"
     end
   end
 

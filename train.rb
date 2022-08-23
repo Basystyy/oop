@@ -1,5 +1,5 @@
 class Train
-  attr_reader :station, :route, :number, :speed, :wagons
+  attr_reader :station, :route, :number, :speed, :wagons, :name, :type
   
   def initialize(number)
     @speed = 0
@@ -12,7 +12,7 @@ class Train
   end
 
   def break
-    @speed = zero
+    @speed = 0
   end
 
   def change(route)
@@ -51,13 +51,12 @@ class Train
 
   def add(wagon)
     return if verify_speed
-    return if verify_type
-    wagons << wagon
+    @wagons << wagon
   end
 
   def delete(wagon)
     return if verify_speed
-    wagons delete(wagon) if wagons.include?(wagon)
+    wagons.delete(wagon) if wagons.include?(wagon)
   end
 
   private
@@ -76,10 +75,6 @@ class Train
 
   def verify_speed
     !speed.zero?
-  end
-
-  def verify_type
-    type != wagon.type
   end
 
 end

@@ -1,6 +1,8 @@
 class Cargo
+
+  attr_reader :type
   
-  def initialize(number)
+  def initialize
     @type = :cargo
   end
 
