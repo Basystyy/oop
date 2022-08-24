@@ -1,4 +1,4 @@
-class Cargo
+class CargoWagon
 
   attr_reader :type
   

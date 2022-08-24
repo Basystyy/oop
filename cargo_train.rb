@@ -1,10 +1,9 @@
-class Cargo_train < Train
-
-  attr_reader :type
+class CargoTrain < Train
   
-  def initialize(number)
-    super
-    @type = :cargo
+  def add(wagon)
+    return if verify_speed
+    return unless wagon.is_a?(CargoWagon)
+    @wagons << wagon
   end
 
 end

@@ -1,5 +1,5 @@
 class Train
-  attr_reader :station, :route, :number, :speed, :wagons, :name, :type
+  attr_reader :station, :route, :number, :speed, :wagons, :name
   
   def initialize(number)
     @speed = 0
@@ -29,7 +29,7 @@ class Train
     end
   end
 
-  def ahead
+  def backward
     if @station != route.first
       send
       @station = @route.stations[index - 1]
@@ -49,14 +49,15 @@ class Train
     @route.stations[index + 1] 
   end
 
-  def add(wagon)
-    return if verify_speed
-    @wagons << wagon
-  end
-
   def delete(wagon)
     return if verify_speed
     wagons.delete(wagon) if wagons.include?(wagon)
+  end
+
+  protected
+  
+  def verify_speed
+    !speed.zero?
   end
 
   private
@@ -71,10 +72,6 @@ class Train
 
   def send
     @station.send(self)
-  end
-
-  def verify_speed
-    !speed.zero?
   end
 
 end

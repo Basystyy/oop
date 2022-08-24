@@ -48,16 +48,16 @@ class Menu
     puts "Введите 1 для создания пассажирского, или 2 для создания грузового поезда"
     flag = gets.chomp.to_i
     puts "Введите номер поезда"
-    number = gets.chomp.to_s
-    @trains << Passenger_train.new(number) if flag == 1
-    @trains << Cargo_train.new(number) if flag == 2
+    number = gets.chomp
+    @trains << PassengerTrain.new(number) if flag == 1
+    @trains << CargoTrain.new(number) if flag == 2
     menu
   end
 
   #menu_3 создать маршрут
   def add_route
     puts "Введите название маршрута"
-    name = gets.chomp.to_s
+    name = gets.chomp
     show_stations
     puts "Введите порядковый номер начальной станции"
     start = @stations[gets.chomp.to_i - 1]
@@ -92,8 +92,8 @@ class Menu
     train = select_train
     speed = train.speed
     train.break
-    wagon = Cargo.new if train.type == :cargo
-    wagon = Passenger.new if train.type == :passenger
+    wagon = CargoWagon.new if train.is_a?(CargoTrain)
+    wagon = PassengerWagon.new if train.is_a?(PassengerTrain)
     train.add(wagon)
     train.speed_up(speed)
     menu
@@ -120,7 +120,7 @@ class Menu
     puts "Введите 1 для перемещения вперед, или 2 - для перемещения назад по маршруту"
     vector = gets.chomp.to_i
     train.forward if vector == 1
-    train.ahead if vector == 2
+    train.backward if vector == 2
     menu
   end
 

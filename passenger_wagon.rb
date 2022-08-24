@@ -1,4 +1,4 @@
-class Passenger
+class PassengerWagon
 
   attr_reader :type
 
