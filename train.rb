@@ -24,7 +24,7 @@ class Train
   def forward
     if @station != route.last
       send
-      @station = @route.stations[index + 1]
+      @station = next_station
       take
     end
   end
@@ -32,7 +32,7 @@ class Train
   def backward
     if @station != route.first
       send
-      @station = @route.stations[index - 1]
+      @station = prev_station
       take
     end
   end
