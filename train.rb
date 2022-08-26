@@ -5,6 +5,8 @@ class Train
     @speed = 0
     @number = number
     @wagons = []
+    @station = nil
+    @route = nil
   end
 
   def speed_up(delta)
@@ -50,13 +52,19 @@ class Train
   end
 
   def delete(wagon)
-    return if verify_speed
+    return if moving?
     wagons.delete(wagon) if wagons.include?(wagon)
+  end
+
+  def view
+    self.wagons.each.with_index(1) do |wagon, index|
+      puts "#{index} - - #{wagon.class}"
+    end
   end
 
   protected
   
-  def verify_speed
+  def moving?
     !speed.zero?
   end
 
