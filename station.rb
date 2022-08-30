@@ -17,19 +17,19 @@ class Station
 
   def view_all
     trains.each do |train|
-      puts "#{train.number} - #{train.type}"
+      puts "#{train.number} - #{train.class}"
     end
   end
 
   def view_cargo
     trains.each do |train|
-      puts train.number if train.type = :cargo
+      puts train.number if train.class == CargoTrain
     end
   end
 
   def view_passenger
     trains.each do |train|
-      puts train.number if train.type = :passenger
+      puts train.number if train.class == PassengerTrain
     end
   end 
 
