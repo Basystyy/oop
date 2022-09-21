@@ -10,6 +10,7 @@ module InstanceCounter
   end
 
   module Register
+    
     @@amount = 0
 
     protected
