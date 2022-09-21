@@ -1,5 +1,15 @@
 class Train
+
+include Manufacturer
+include InstanceCounter
+
   attr_reader :station, :route, :number, :speed, :wagons, :name
+
+  class << self
+    def find(number)
+      Train.find(number)
+    end
+  end
   
   def initialize(number)
     @speed = 0
@@ -56,9 +66,9 @@ class Train
     wagons.delete(wagon) if wagons.include?(wagon)
   end
 
-  def view
+  def view_train
     self.wagons.each.with_index(1) do |wagon, index|
-      puts "#{index} - - #{wagon.class}"
+      puts "#{index} - - #{wagon.manufacturer}"
     end
   end
 

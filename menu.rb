@@ -105,7 +105,7 @@ class Menu
     train = select_train
     speed = train.speed
     train.break
-    train.view
+    train.view_train
     puts "Введите порядковый номер удаляемого вагона"
     wagon = train.wagons[gets.chomp.to_i - 1]
     train.wagons.delete(wagon)
@@ -146,7 +146,7 @@ class Menu
 
   def select_train
     @trains.each.with_index(1) do |train, index|
-      puts "#{index} - - #{train.number}"
+      puts "#{index} - - #{train.number} - - #{train.manufacturer}"
     end
     puts "Введите порядковый номер поезда"
     @trains[gets.chomp.to_i - 1]

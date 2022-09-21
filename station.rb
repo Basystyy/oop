@@ -1,8 +1,20 @@
 class Station
+  include InstanceCounter
 
   attr_reader :trains, :name
+
+  @@stations = []
+
+  class << self
+    def all
+      @@stations.each do |station|
+        station
+      end
+    end
+  end
   
   def initialize(name)
+    @@stations << self
     @name = name
     @trains = []
   end
@@ -31,6 +43,6 @@ class Station
     trains.each do |train|
       puts train.number if train.class == PassengerTrain
     end
-  end 
+  end
 
 end
