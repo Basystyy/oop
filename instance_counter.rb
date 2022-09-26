@@ -6,17 +6,15 @@ module InstanceCounter
   end
 
   module Instances
-    self.class.@@amount
+    def instances
+      self.class.amount
+    end
   end
 
-  module Register
-    
+  module Register   
     @@amount = 0
-
-    protected
-    
-    def initialize
-      super
+    private
+    def register_instance
       @@amount += 1
     end
 

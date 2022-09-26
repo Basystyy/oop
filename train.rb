@@ -6,12 +6,15 @@ include InstanceCounter
   attr_reader :station, :route, :number, :speed, :wagons, :name
 
   class << self
+    @@trains = []
     def find(number)
-      Train.find(number)
+      @@trains.select { |train| train.number == number }
     end
   end
   
   def initialize(number)
+    register_instance
+    @@trains << self
     @speed = 0
     @number = number
     @wagons = []

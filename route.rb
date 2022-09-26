@@ -4,6 +4,7 @@ class Route
   attr_reader :stations, :name
 
   def initialize(name, start, last)
+    register_instance
     @name = name
     @stations = [start, last]
   end

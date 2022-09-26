@@ -7,13 +7,12 @@ class Station
 
   class << self
     def all
-      @@stations.each do |station|
-        station
-      end
+      @@stations
     end
   end
   
   def initialize(name)
+    register_instance
     @@stations << self
     @name = name
     @trains = []
