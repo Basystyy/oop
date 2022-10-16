@@ -1,21 +1,27 @@
 module InstanceCounter
 
   def self.included(base)
-    base.extend Instances
-    base.include Register
+    base.extend ClassMethods
+    base.include InstanceMethods
   end
 
-  module Instances
+  module ClassMethods
+    
+    def count_instances
+      @@amount ||= 0
+      @@amount += 1
+    end
+
     def instances
-      self.class.amount
+      @@amount ||= 0
+      @@amount
     end
   end
 
-  module Register   
-    @@amount = 0
-    private
+  module InstanceMethods
+    protected
     def register_instance
-      @@amount += 1
+      self.class.count_instances
     end
 
   end
