@@ -15,7 +15,7 @@ include InstanceCounter
   end
   
   def initialize(number)
-    raise if self.class.to_s == 'Train'
+   raise if self.class.to_s == 'Train'
     register_instance
     @@trains << self
     @speed = 0
