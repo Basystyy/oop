@@ -5,9 +5,9 @@ include InstanceCounter
 
   attr_reader :station, :route, :number, :speed, :wagons, :name
 
+  @@trains = []
+  
   class << self
-
-    @@trains = []
     def find(number)
       @@trains.select { |train| train.number == number }
     end
@@ -15,14 +15,14 @@ include InstanceCounter
   end
   
   def initialize(number)
-   raise if self.class.to_s == 'Train'
-    register_instance
+    raise if self.class.to_s == 'Train'
     @@trains << self
     @speed = 0
     @number = number
     @wagons = []
     @station = nil
     @route = nil
+    register_instance
   end
 
   def speed_up(delta)

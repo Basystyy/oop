@@ -12,10 +12,10 @@ class Station
   end
   
   def initialize(name)
-    register_instance
     @@stations << self
     @name = name
     @trains = []
+    register_instance
   end
   
   def take(train)
