@@ -2,27 +2,29 @@ class Train
 
 include Manufacturer
 include InstanceCounter
+extend Store
 
   attr_reader :station, :route, :number, :speed, :wagons, :name
 
-  @@trains = []
+  NUMBER_CARGO = /^cargo\d+$/i
+  NUMBER_PASS = /^pass\d+$/i
   
-  class << self
-    def find(number)
-      @@trains.select { |train| train.number == number }
-    end
-
-  end
-  
-  def initialize(number)
-    raise if self.class.to_s == 'Train'
-    @@trains << self
+  def initialize(name)
+    @name = name
+    validate!
     @speed = 0
-    @number = number
     @wagons = []
     @station = nil
     @route = nil
+    self.class.add_object(self)
     register_instance
+  end
+
+  def validate!
+    raise "Отсутствие номера поезда недопустимо!" if name == ''
+    raise "Несоответсвие формата номера поезда!" if self.class.to_s == 'CargoTrain' && name !~ NUMBER_CARGO
+    raise "Несоответсвие формата номера поезда!" if self.class.to_s == 'PassengerTrain' && name !~ NUMBER_PASS
+    raise "Такой номер поезда уже существует, выберите другой." if self.class.find(name) != []
   end
 
   def speed_up(delta)
@@ -74,7 +76,7 @@ include InstanceCounter
 
   def view_train
     self.wagons.each.with_index(1) do |wagon, index|
-      puts "#{index} - - #{wagon.manufacturer}"
+      puts "#{index} - - #{wagon.view_manufacturer}"
     end
   end
 

@@ -1,12 +1,22 @@
 class Route
   include InstanceCounter
+  extend Store
 
   attr_reader :stations, :name
 
+  NAME_FORMAT = /^[a-z].+[a-z]+$/i
+
   def initialize(name, start, last)
     @name = name
+    validate!
     @stations = [start, last]
+    self.class.add_object(self)
     register_instance
+  end
+
+  def validate!
+    raise "Отсутствие названия маршрута недопустимо!" if name == ''
+    raise "Несоответсвие формата названия маршрута" if name !~ NAME_FORMAT
   end
   
   def first

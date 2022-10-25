@@ -1,11 +1,7 @@
 class Menu
-  def initialize
-    @stations = []
-    @trains = []
-    @routes = []
-  end    
 
-  #стартовое меню
+  attr_reader :trains
+
   def menu
     select = nil
     while select != 0 do
@@ -42,36 +38,42 @@ class Menu
       end
     end
   end
+end
 
-  #menu_1 добавить станцию
   def add_station
     puts "Введите название станции"
-    @stations << Station.new(gets.chomp)
+    Station.new(gets.chomp)
+    puts "Станция создана."
+  rescue => error
+    puts "#{error} Станция не создана!"
   end
 
-  #menu_2 добавить поезд
   def add_train
     puts "Введите 1 для создания пассажирского, или 2 для создания грузового поезда"
     flag = gets.chomp.to_i
     puts "Введите номер поезда"
-    number = gets.chomp
-    @trains << PassengerTrain.new(number) if flag == 1
-    @trains << CargoTrain.new(number) if flag == 2
+    name = gets.chomp
+    PassengerTrain.new(name) if flag == 1
+    CargoTrain.new(name) if flag == 2
+    puts "Поезд создан."
+  rescue => error
+    puts "#{error} Поезд не создан!"
   end
 
-  #menu_3 создать маршрут
   def add_route
     puts "Введите название маршрута"
     name = gets.chomp
     show_stations
     puts "Введите порядковый номер начальной станции"
-    start = @stations[gets.chomp.to_i - 1]
+    start = Station.all[gets.chomp.to_i - 1]
     puts "Введите порядковый номер конечной станции"
-    last = @stations[gets.chomp.to_i - 1]
-    @routes << Route.new(name, start, last)
+    last = Station.all[gets.chomp.to_i - 1]
+    Route.new(name, start, last)
+    puts "Маршрут создан."
+  rescue => error
+    puts "#{error} Маршрут не создан!"
   end
 
-  #menu_4 изменить маршрут
   def change_route
     route = select_route
     route.view
@@ -79,17 +81,15 @@ class Menu
     flag_route = gets.chomp.to_i
     show_stations
     puts "Введите порядковый номер добавляемой станции"
-    route.add(@stations[gets.chomp.to_i - 1], flag_route)
+    route.add(Station.all[gets.chomp.to_i - 1], flag_route - 1)
   end
 
-  #menu_5 назначить маршрут
   def assign_route
     train = select_train
     route = select_route
     train.change(route)
   end
 
-  #menu_6 добавить вагон
   def add_wagon
     train = select_train
     speed = train.speed
@@ -100,7 +100,6 @@ class Menu
     train.speed_up(speed)
   end
 
-  #menu_7 удалить вагон
   def del_wagon
     train = select_train
     speed = train.speed
@@ -112,7 +111,6 @@ class Menu
     train.speed_up(speed)
   end
 
-  #menu_8 перемещение поезда по маршруту
   def run_train
     train = select_train
     puts "Введите 1 для перемещения вперед, или 2 - для перемещения назад по маршруту"
@@ -121,34 +119,33 @@ class Menu
     train.backward if vector == 2
   end
 
-  #menu_9 просмотр станций и поездов на них
   def view
     show_stations
     puts "Введите порядковый номер станции"
-    @stations[gets.chomp.to_i - 1].view_all
+    Station.all[gets.chomp.to_i - 1].view_all
   end
 
   private
   def show_stations
     puts "Перечень ВСЕХ станций:"
-    @stations.each.with_index(1) do |station, index|
+    Station.all.each.with_index(1) do |station, index|
       puts "#{index} - - #{station.name}"
     end
   end
 
   def select_route
-    @routes.each.with_index(1) do |route, index|
+    Route.all.each.with_index(1) do |route, index|
       puts "#{index} - - #{route.name}"
     end
     puts "Введите порядковый номер маршрута"
-    @routes[gets.chomp.to_i - 1]
+    Route.all[gets.chomp.to_i - 1]
   end
 
   def select_train
-    @trains.each.with_index(1) do |train, index|
-      puts "#{index} - - #{train.number} - - #{train.manufacturer}"
+    trains = PassengerTrain.all + CargoTrain.all
+    trains.each.with_index(1) do |train, index|
+      puts "#{index} - - #{train.name}"
     end
     puts "Введите порядковый номер поезда"
-    @trains[gets.chomp.to_i - 1]
+    trains[gets.chomp.to_i - 1]
   end
-end

@@ -1,21 +1,22 @@
 class Station
   include InstanceCounter
+  extend Store
 
   attr_reader :trains, :name
 
-  @@stations = []
-
-  class << self
-    def all
-      @@stations
-    end
-  end
+  NAME_FORMAT = /^[a-z]+$/i
   
   def initialize(name)
-    @@stations << self
     @name = name
+    validate!
     @trains = []
+    self.class.add_object(self)
     register_instance
+  end
+  
+  def validate!
+    raise "Отсутствие названия станции недопустимо!" if name == ''
+    raise "Несоответсвие формата названия станции!" if name !~ NAME_FORMAT
   end
   
   def take(train)
@@ -28,19 +29,19 @@ class Station
 
   def view_all
     trains.each do |train|
-      puts "#{train.number} - #{train.class}"
+      puts "#{train.name} - #{train.class}"
     end
   end
 
   def view_cargo
     trains.each do |train|
-      puts train.number if train.class == CargoTrain
+      puts train.name if train.class == CargoTrain
     end
   end
 
   def view_passenger
     trains.each do |train|
-      puts train.number if train.class == PassengerTrain
+      puts train.name if train.class == PassengerTrain
     end
   end
 
