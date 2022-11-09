@@ -18,6 +18,12 @@ class Station
     raise "Отсутствие названия станции недопустимо!" if name == ''
     raise "Несоответсвие формата названия станции!" if name !~ NAME_FORMAT
   end
+
+  def valid?
+    validate!
+  rescue StandartError
+    false
+  end
   
   def take(train)
     trains << train
@@ -28,9 +34,8 @@ class Station
   end
 
   def view_all
-    trains.each do |train|
-      puts "#{train.name} - #{train.class}"
-    end
+    view_cargo
+    view_passenger
   end
 
   def view_cargo

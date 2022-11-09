@@ -38,13 +38,12 @@ class Menu
       end
     end
   end
-end
 
   def add_station
     puts "Введите название станции"
     Station.new(gets.chomp)
     puts "Станция создана."
-  rescue => error
+  rescue StandardError => error
     puts "#{error} Станция не создана!"
   end
 
@@ -56,7 +55,7 @@ end
     PassengerTrain.new(name) if flag == 1
     CargoTrain.new(name) if flag == 2
     puts "Поезд создан."
-  rescue => error
+  rescue StandardError => error
     puts "#{error} Поезд не создан!"
   end
 
@@ -70,7 +69,7 @@ end
     last = Station.all[gets.chomp.to_i - 1]
     Route.new(name, start, last)
     puts "Маршрут создан."
-  rescue => error
+  rescue StandardError => error
     puts "#{error} Маршрут не создан!"
   end
 
@@ -149,3 +148,4 @@ end
     puts "Введите порядковый номер поезда"
     trains[gets.chomp.to_i - 1]
   end
+end

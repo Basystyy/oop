@@ -6,8 +6,7 @@ extend Store
 
   attr_reader :station, :route, :number, :speed, :wagons, :name
 
-  NUMBER_CARGO = /^cargo\d+$/i
-  NUMBER_PASS = /^pass\d+$/i
+  NAME_FORMAT = /^[a-z0-9]{3}-?[a-z0-9]{2}/i
   
   def initialize(name)
     @name = name
@@ -22,8 +21,7 @@ extend Store
 
   def validate!
     raise "Отсутствие номера поезда недопустимо!" if name == ''
-    raise "Несоответсвие формата номера поезда!" if self.class.to_s == 'CargoTrain' && name !~ NUMBER_CARGO
-    raise "Несоответсвие формата номера поезда!" if self.class.to_s == 'PassengerTrain' && name !~ NUMBER_PASS
+    raise "Несоответсвие формата номера поезда!" if name !~ NAME_FORMAT
     raise "Такой номер поезда уже существует, выберите другой." if self.class.find(name) != []
   end
 

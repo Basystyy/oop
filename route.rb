@@ -8,15 +8,18 @@ class Route
 
   def initialize(name, start, last)
     @name = name
-    validate!
     @stations = [start, last]
+    validate!
     self.class.add_object(self)
     register_instance
   end
 
   def validate!
-    raise "Отсутствие названия маршрута недопустимо!" if name == ''
+    raise "Отсутствие названия маршрута недопустимо!" if name == '' && name.nil?
     raise "Несоответсвие формата названия маршрута" if name !~ NAME_FORMAT
+    @stations.each.with_index(1) do |name|
+      raise "Объект не может быть частью маршрута" if name.class .to_s != 'Station'
+    end
   end
   
   def first
@@ -28,6 +31,7 @@ class Route
   end
 
   def add(station, number)
+    validate!
     if @stations.index(last) >= (number - 1) && number >= 1
       index = number - 1
       @stations.insert(index, station)
