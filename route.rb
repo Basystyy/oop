@@ -1,6 +1,6 @@
 class Route
   include InstanceCounter
-  extend Store
+  include Store
 
   attr_reader :stations, :name
 
@@ -10,15 +10,15 @@ class Route
     @name = name
     @stations = [start, last]
     validate!
-    self.class.add_object(self)
+    added_object
     register_instance
   end
 
   def validate!
     raise "Отсутствие названия маршрута недопустимо!" if name == '' && name.nil?
     raise "Несоответсвие формата названия маршрута" if name !~ NAME_FORMAT
-    @stations.each.with_index(1) do |name|
-      raise "Объект не может быть частью маршрута" if name.class .to_s != 'Station'
+    @stations.each do |name|
+      raise "Объект не может быть частью маршрута" if !name.is_a?(Station)
     end
   end
   

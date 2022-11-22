@@ -1,6 +1,6 @@
 class Station
   include InstanceCounter
-  extend Store
+  include Store
 
   attr_reader :trains, :name
 
@@ -10,19 +10,13 @@ class Station
     @name = name
     validate!
     @trains = []
-    self.class.add_object(self)
+    added_object
     register_instance
   end
   
   def validate!
     raise "Отсутствие названия станции недопустимо!" if name == ''
     raise "Несоответсвие формата названия станции!" if name !~ NAME_FORMAT
-  end
-
-  def valid?
-    validate!
-  rescue StandartError
-    false
   end
   
   def take(train)
@@ -40,13 +34,13 @@ class Station
 
   def view_cargo
     trains.each do |train|
-      puts train.name if train.class == CargoTrain
+      puts train.name if train.is_a?(CargoTrain)
     end
   end
 
   def view_passenger
     trains.each do |train|
-      puts train.name if train.class == PassengerTrain
+      puts train.name if train.is_a?(PassengerTrain)
     end
   end
 

@@ -2,11 +2,11 @@ class Train
 
 include Manufacturer
 include InstanceCounter
-extend Store
+include Store
 
-  attr_reader :station, :route, :number, :speed, :wagons, :name
+  attr_reader :station, :route, :speed, :wagons, :name
 
-  NAME_FORMAT = /^[a-z0-9]{3}-?[a-z0-9]{2}/i
+  NAME_FORMAT = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i
   
   def initialize(name)
     @name = name
@@ -15,7 +15,7 @@ extend Store
     @wagons = []
     @station = nil
     @route = nil
-    self.class.add_object(self)
+    added_object
     register_instance
   end
 
