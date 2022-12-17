@@ -90,11 +90,13 @@ class Menu
   end
 
   def add_wagon
+    puts "Введите объем для грузового или кол-во мест для пассажирского"
+    capacity = gets.chomp.to_i
     train = select_train
     speed = train.speed
     train.break
-    wagon = CargoWagon.new if train.is_a?(CargoTrain)
-    wagon = PassengerWagon.new if train.is_a?(PassengerTrain)
+    wagon(capacity) = CargoWagon.new if train.is_a?(CargoTrain)
+    wagon(capacity) = PassengerWagon.new if train.is_a?(PassengerTrain)
     train.add(wagon)
     train.speed_up(speed)
   end
