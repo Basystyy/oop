@@ -44,4 +44,10 @@ class Station
     end
   end
 
+  def view(&block)
+    trains.each do |train|
+      if block_given? yield(train)
+    end
+  end
+
 end

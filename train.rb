@@ -98,4 +98,10 @@ include Store
     @station.send(self)
   end
 
+  def view(&block)   
+    wagons.each do |wagon|
+      if block_given? yield(wagon)
+    end
+  end
+
 end
