@@ -1,8 +1,8 @@
 class Train
 
-include Manufacturer
-include InstanceCounter
-include Store
+  include Manufacturer
+  include InstanceCounter
+  include Store
 
   attr_reader :station, :route, :speed, :wagons, :name
 
@@ -100,7 +100,7 @@ include Store
 
   def view(&block)   
     wagons.each do |wagon|
-      if block_given? yield(wagon)
+      yield(wagon) if block_given? 
     end
   end
 

@@ -13,7 +13,8 @@ class Menu
     puts "Введите 6, чтобы добавить вагон к СУЩЕСТВУЮЩЕМУ поезду"
     puts "Введите 7, чтобы отцепить СУЩЕСТВУЮЩИЙ ПРИЦЕПЛЕННЫЙ вагон от поезда"
     puts "Введите 8, чтобы пенреместить СУЩЕСТВУЮЩИЙ поезд по НАЗНАЧЕНННОМУ маршруту"
-    puts "Введите 9, чтобы просмотреть список станций или список поездов на станции"
+    puts "Введите 9, чтобы просмотреть список поездов на станции"
+    puts "Введите 10 для просмотра списка вагонов поезда"
     puts "Введите 0, чтобы выйти из приложения"
     select = gets.chomp.to_i
       case select
@@ -35,6 +36,8 @@ class Menu
           run_train
         when 9
           view
+        when 10
+          view_train
       end
     end
   end
@@ -91,13 +94,12 @@ class Menu
 
   def add_wagon
     puts "Введите объем для грузового или кол-во мест для пассажирского"
-    capacity = gets.chomp.to_i if train.is_a?(CargoTrain)
-    seats = gets.chomp.to_i if train.is_a?(PassengerTrain)
+    capacity = gets.chomp.to_i
     train = select_train
     speed = train.speed
     train.break
-    wagon(capacity) = CargoWagon.new if train.is_a?(CargoTrain)
-    wagon(seats) = PassengerWagon.new if train.is_a?(PassengerTrain)
+    wagon = CargoWagon.new(capacity) if train.is_a?(CargoTrain)
+    wagon = PassengerWagon.new(capacity) if train.is_a?(PassengerTrain)
     train.add(wagon)
     train.speed_up(speed)
   end
@@ -127,6 +129,20 @@ class Menu
     Station.all[gets.chomp.to_i - 1].view_all
   end
 
+  def view_train
+    train = select_train
+    if train.is_a?(CargoTrain)
+      train.wagons.each.with_index(1) do |wagon, index|
+        puts "#{index} - cargo - свободно места: #{wagon.free_volume} - занято: #{wagon.loaded_volume}"
+      end
+    end
+    if train.is_a?(PassengerTrain)
+      train.wagons.each.with_index(1) do |wagon, index|
+        puts "#{index} - passenger - свободно мест: #{wagon.free_seats} - занято: #{wagon.occupied_seats}"
+      end
+    end
+  end
+
   private
   def show_stations
     puts "Перечень ВСЕХ станций:"
@@ -145,8 +161,11 @@ class Menu
 
   def select_train
     trains = PassengerTrain.all + CargoTrain.all
-    trains.each.with_index(1) do |train, index|
-      puts "#{index} - - #{train.name}"
+    PassengerTrain.all.each.with_index(1) do |train, index|
+      puts "#{index} - #{train.name} - passenger - #{train.wagons.length}"
+    end
+    CargoTrain.all.each.with_index(PassengerTrain.all.length + 1) do |train, index|
+      puts "#{index} - #{train.name} - cargo - #{train.wagons.length}"
     end
     puts "Введите порядковый номер поезда"
     trains[gets.chomp.to_i - 1]

@@ -29,5 +29,11 @@ pas03.change(rt1)
 car01.change(rt2)
 car02.change(rt2)
 car03.change(rt2)
+PassengerTrain.all.each do |train|
+  5.times { train.add(PassengerWagon.new(54)) }
+end
+CargoTrain.all.each do |train|
+  5.times { train.add(CargoWagon.new(1000)) }
+end
 start = Menu.new
 start.menu
