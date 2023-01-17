@@ -78,6 +78,12 @@ class Train
     end
   end
 
+  def view(&block)   
+    wagons.each do |wagon|
+      yield(wagon) if block_given? 
+    end
+  end
+
   protected
   
   def moving?
@@ -96,12 +102,6 @@ class Train
 
   def send
     @station.send(self)
-  end
-
-  def view(&block)   
-    wagons.each do |wagon|
-      yield(wagon) if block_given? 
-    end
   end
 
 end

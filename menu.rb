@@ -203,6 +203,7 @@ class Menu
 
   def select_wagon
     train = select_train
+    train.view
     train.wagons.each.with_index(1) do |wagon, index|
       puts "#{index} - cargo - свободно места: #{(wagon.capacity - wagon.loaded_volume)} - занято: #{wagon.loaded_volume}" if wagon.is_a?(CargoWagon)
       puts "#{index} - passenger - свободно мест: #{(wagon.seats - wagon.occupied_seats)} - занято: #{wagon.occupied_seats}" if wagon.is_a?(PassengerWagon)
