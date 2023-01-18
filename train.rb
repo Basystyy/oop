@@ -78,9 +78,9 @@ class Train
     end
   end
 
-  def view(&block)   
-    wagons.each do |wagon|
-      yield(wagon) if block_given? 
+  def view(&block)
+    wagons.each.with_index(1) do |wagon,index|
+      yield(wagon, index) if block_given?
     end
   end
 

@@ -8,14 +8,15 @@ class Menu
     puts "Введите 1, чтобы добавить станцию"
     puts "Введите 2, чтобы добавить поезд"
     puts "Введите 3, чтобы создать маршрут"
-    puts "Введите 4, чтобы изменить СУЩЕСТВУЮЩИЙ маршрут"
-    puts "Введите 5, чтобы назначить маршрут СУЩЕСТВУЮЩЕМУ поезду"
-    puts "Введите 6, чтобы добавить вагон к СУЩЕСТВУЮЩЕМУ поезду"
-    puts "Введите 7, чтобы отцепить СУЩЕСТВУЮЩИЙ ПРИЦЕПЛЕННЫЙ вагон от поезда"
-    puts "Введите 8, чтобы пенреместить СУЩЕСТВУЮЩИЙ поезд по НАЗНАЧЕНННОМУ маршруту"
+    puts "Введите 4, чтобы изменить маршрут"
+    puts "Введите 5, чтобы назначить маршрут поезду"
+    puts "Введите 6, чтобы добавить вагон к поезду"
+    puts "Введите 7, чтобы отцепить вагон от поезда"
+    puts "Введите 8, чтобы пенреместить поезд по маршруту"
     puts "Введите 9, чтобы просмотреть список поездов на станции и список их вагонов"
     puts "Введите 10, чтобы загрузить вагон или посадить пассажира"
     puts "Введите 11, чтобы разгрузить вагон или высадить пассажира"
+    puts "Введите 12, чтобы проверить загрузку вагона"
     puts "Введите 0, чтобы выйти из приложения"
     select = gets.chomp.to_i
       case select
@@ -41,6 +42,8 @@ class Menu
           load_wagon
         when 11
           unload_wagon
+        when 12
+          monitoring_wagon
       end
     end
   end
@@ -130,28 +133,14 @@ class Menu
     show_stations
     puts "Введите порядковый номер станции"
     station = Station.all[gets.chomp.to_i - 1]
-    station.trains.each.with_index(1) do |train, index_1|
-      if train.is_a?(CargoTrain)
-        puts "#{index_1} - #{train.name} - cargo - #{train.wagons.length}"
-        train.wagons.each.with_index(1) do |wagon, index_2|
-          puts "  #{index_2} - cargo - свободно места: #{(wagon.capacity - wagon.loaded_volume)} - занято: #{wagon.loaded_volume}"
-        end
-      end
-      if train.is_a?(PassengerTrain)
-        puts "#{index_1} - #{train.name} - passenger - #{train.wagons.length}"
-        train.wagons.each.with_index(1) do |wagon, index_2|
-          puts "  #{index_2} - passenger - свободно мест: #{(wagon.seats - wagon.occupied_seats)} - занято: #{wagon.occupied_seats}"
-        end
-      end
-    end
-    station.view
+    station.view_all
   end
 
   def load_wagon
     wagon = select_wagon
     if wagon.is_a?(CargoWagon)
       puts "Введите загружаемый объем"
-      capacity = gets.chomp.to_i
+      capacity = gets.chomp.to_f
       wagon.load(capacity)
     end
     wagon.put if wagon.is_a?(PassengerWagon)
@@ -161,10 +150,24 @@ class Menu
     wagon = select_wagon
     if wagon.is_a?(CargoWagon)
       puts "Введите выгружаемый объем"
-      capacity = gets.chomp.to_i
+      capacity = gets.chomp.to_f
       wagon.unload(capacity)
     end
     wagon.plant if wagon.is_a?(PassengerWagon)
+  end
+
+  def monitoring_wagon
+    wagon = select_wagon
+    if wagon.is_a?(CargoWagon)
+      puts "Общая вместимость: #{wagon.capacity}"
+      puts "Занятый объём: #{wagon.loaded_volume}"
+      puts "Свободный объём: #{(wagon.capacity - wagon.loaded_volume)}"
+    end
+    if wagon.is_a?(PassengerWagon)
+      puts "Общая вместимость: #{wagon.seats}"
+      puts "Занятыe места: #{wagon.occupied_seats}"
+      puts "Свободныe места: #{(wagon.seats - wagon.occupied_seats)}"
+    end
   end
 
   private
@@ -203,7 +206,6 @@ class Menu
 
   def select_wagon
     train = select_train
-    train.view
     train.wagons.each.with_index(1) do |wagon, index|
       puts "#{index} - cargo - свободно места: #{(wagon.capacity - wagon.loaded_volume)} - занято: #{wagon.loaded_volume}" if wagon.is_a?(CargoWagon)
       puts "#{index} - passenger - свободно мест: #{(wagon.seats - wagon.occupied_seats)} - занято: #{wagon.occupied_seats}" if wagon.is_a?(PassengerWagon)
