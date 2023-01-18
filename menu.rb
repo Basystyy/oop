@@ -16,7 +16,6 @@ class Menu
     puts "Введите 9, чтобы просмотреть список поездов на станции и список их вагонов"
     puts "Введите 10, чтобы загрузить вагон или посадить пассажира"
     puts "Введите 11, чтобы разгрузить вагон или высадить пассажира"
-    puts "Введите 12, чтобы проверить загрузку вагона"
     puts "Введите 0, чтобы выйти из приложения"
     select = gets.chomp.to_i
       case select
@@ -42,8 +41,6 @@ class Menu
           load_wagon
         when 11
           unload_wagon
-        when 12
-          monitoring_wagon
       end
     end
   end
@@ -154,20 +151,6 @@ class Menu
       wagon.unload(capacity)
     end
     wagon.plant if wagon.is_a?(PassengerWagon)
-  end
-
-  def monitoring_wagon
-    wagon = select_wagon
-    if wagon.is_a?(CargoWagon)
-      puts "Общая вместимость: #{wagon.capacity}"
-      puts "Занятый объём: #{wagon.loaded_volume}"
-      puts "Свободный объём: #{(wagon.capacity - wagon.loaded_volume)}"
-    end
-    if wagon.is_a?(PassengerWagon)
-      puts "Общая вместимость: #{wagon.seats}"
-      puts "Занятыe места: #{wagon.occupied_seats}"
-      puts "Свободныe места: #{(wagon.seats - wagon.occupied_seats)}"
-    end
   end
 
   private

@@ -53,7 +53,7 @@ class Station
       end
     end
   end
-
+  
   def view(&block)
     trains.each.with_index(1) do |train, index|
       yield(train, index) if block_given?

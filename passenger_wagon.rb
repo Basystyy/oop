@@ -10,7 +10,7 @@ class PassengerWagon < Wagon
   def put
     raise "Нет свободных мест." if @occupied_seats == @seats
     @occupied_seats += 1
-    puts "Пассажир занял свое место."
+    puts "Пассажир занял свое место. Свободно мест #{free_seats}"
   rescue StandardError => error
     puts "#{error}. Пассажир не загружен в вагон!"
   end
@@ -21,6 +21,10 @@ class PassengerWagon < Wagon
     puts "Пассажир высажен."
   rescue StandardError => error
     puts "#{error} Никто не покинул вагон."
+  end
+
+  def free_seats
+    seats - occupied_seats
   end
 
 end
