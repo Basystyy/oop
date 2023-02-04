@@ -40,7 +40,9 @@ class Station
 
       puts "#{index1} - #{train.name} - cargo - #{train.wagons.length}"
       train.view do |wagon, index2|
-        puts "  #{index2} - cargo - свободно места: #{wagon.capacity - wagon.loaded_volume} - занято: #{wagon.loaded_volume}"
+        text = ['  ', index2, ' - cargo - свободно места: ',
+                (wagon.capacity - wagon.loaded_volume), ' - занято: ', wagon.loaded_volume]
+        puts text
       end
     end
   end
@@ -51,7 +53,9 @@ class Station
 
       puts "#{index1} - #{train.name} - passenger - #{train.wagons.length}"
       train.view do |wagon, index2|
-        puts "  #{index2} - passenger - свободно мест: #{wagon.seats - wagon.occupied_seats} - занято: #{wagon.occupied_seats}"
+        text = ['  ', index2, ' - passenger - свободно мест: ',
+                (wagon.seats - wagon.occupied_seats), ' - занято: ', wagon.occupied_seats]
+        puts text
       end
     end
   end

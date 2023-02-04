@@ -4,7 +4,6 @@ class PassengerWagon < Wagon
   attr_reader :occupied_seats, :seats
 
   def initialize(seats)
-    super
     @seats = seats
     @occupied_seats = 0
   end

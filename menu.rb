@@ -176,13 +176,17 @@ class Menu
     PassengerTrain.all.each.with_index(1) do |train, index1|
       puts "#{index1} - #{train.name} - passenger - #{train.wagons.length}"
       train.wagons.each.with_index(1) do |wagon, index2|
-        puts "  #{index2} - passenger - свободно мест: #{wagon.seats - wagon.occupied_seats} - занято: #{wagon.occupied_seats}"
+        text = ['  ', index2, ' - passenger - свободно мест: ',
+                (wagon.seats - wagon.occupied_seats), ' - занято: ', wagon.occupied_seats]
+        puts text
       end
     end
     CargoTrain.all.each.with_index(PassengerTrain.all.length + 1) do |train, index1|
       puts "#{index1} - #{train.name} - cargo - #{train.wagons.length}"
       train.wagons.each.with_index(1) do |wagon, index2|
-        puts "  #{index2} - cargo - свободно места: #{wagon.capacity - wagon.loaded_volume} - занято: #{wagon.loaded_volume}"
+        text = ['  ', index2, ' - cargo - свободно места: ',
+                (wagon.capacity - wagon.loaded_volume), ' - занято: ', wagon.loaded_volume]
+        puts text
       end
     end
     puts 'Введите порядковый номер поезда'
@@ -193,10 +197,14 @@ class Menu
     train = select_train
     train.wagons.each.with_index(1) do |wagon, index|
       if wagon.is_a?(CargoWagon)
-        puts "#{index} - cargo - свободно места: #{wagon.capacity - wagon.loaded_volume} - занято: #{wagon.loaded_volume}"
+        text = [index, ' - cargo - свободно места: ',
+                (wagon.capacity - wagon.loaded_volume), ' - занято: ', wagon.loaded_volume]
+        puts text
       end
       if wagon.is_a?(PassengerWagon)
-        puts "#{index} - passenger - свободно мест: #{wagon.seats - wagon.occupied_seats} - занято: #{wagon.occupied_seats}"
+        text = [index, ' - passenger - свободно мест: ',
+                (wagon.seats - wagon.occupied_seats), ' - занято: ', wagon.occupied_seats]
+        puts text
       end
     end
     puts 'Введите порядковый номер вагона'

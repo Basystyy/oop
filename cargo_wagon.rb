@@ -4,7 +4,6 @@ class CargoWagon < Wagon
   attr_reader :loaded_volume, :capacity
 
   def initialize(capacity)
-    super
     @capacity = capacity
     @loaded_volume = 0
   end
