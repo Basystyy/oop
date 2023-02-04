@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Station
+  include Display
   include InstanceCounter
   include Store
 
@@ -40,9 +41,7 @@ class Station
 
       puts "#{index1} - #{train.name} - cargo - #{train.wagons.length}"
       train.view do |wagon, index2|
-        text = ['  ', index2, ' - cargo - свободно места: ',
-                (wagon.capacity - wagon.loaded_volume), ' - занято: ', wagon.loaded_volume]
-        puts text
+        display_cargo(wagon, index2)
       end
     end
   end
@@ -53,9 +52,7 @@ class Station
 
       puts "#{index1} - #{train.name} - passenger - #{train.wagons.length}"
       train.view do |wagon, index2|
-        text = ['  ', index2, ' - passenger - свободно мест: ',
-                (wagon.seats - wagon.occupied_seats), ' - занято: ', wagon.occupied_seats]
-        puts text
+        display_passenger(wagon, index2)
       end
     end
   end

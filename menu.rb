@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Menu
+  include Display
   attr_reader :trains
 
   def menu
@@ -176,17 +177,13 @@ class Menu
     PassengerTrain.all.each.with_index(1) do |train, index1|
       puts "#{index1} - #{train.name} - passenger - #{train.wagons.length}"
       train.wagons.each.with_index(1) do |wagon, index2|
-        text = ['  ', index2, ' - passenger - свободно мест: ',
-                (wagon.seats - wagon.occupied_seats), ' - занято: ', wagon.occupied_seats]
-        puts text
+        display_passenger(wagon, index2)
       end
     end
     CargoTrain.all.each.with_index(PassengerTrain.all.length + 1) do |train, index1|
       puts "#{index1} - #{train.name} - cargo - #{train.wagons.length}"
       train.wagons.each.with_index(1) do |wagon, index2|
-        text = ['  ', index2, ' - cargo - свободно места: ',
-                (wagon.capacity - wagon.loaded_volume), ' - занято: ', wagon.loaded_volume]
-        puts text
+        display_cargo(wagon, index2)
       end
     end
     puts 'Введите порядковый номер поезда'
@@ -197,14 +194,10 @@ class Menu
     train = select_train
     train.wagons.each.with_index(1) do |wagon, index|
       if wagon.is_a?(CargoWagon)
-        text = [index, ' - cargo - свободно места: ',
-                (wagon.capacity - wagon.loaded_volume), ' - занято: ', wagon.loaded_volume]
-        puts text
+        display_cargo(wagon, index2)
       end
       if wagon.is_a?(PassengerWagon)
-        text = [index, ' - passenger - свободно мест: ',
-                (wagon.seats - wagon.occupied_seats), ' - занято: ', wagon.occupied_seats]
-        puts text
+        display_passenger(wagon, index2)
       end
     end
     puts 'Введите порядковый номер вагона'

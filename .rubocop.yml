@@ -17,7 +17,3 @@ Metrics/CyclomaticComplexity:
 Metrics/MethodLength:
   Exclude:
     - menu.rb
-Lint/MissingSuper:
-  Exclude:
-  - cargo_wagon.rb
-  - passenger_wagon.rb

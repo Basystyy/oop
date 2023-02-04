@@ -2,4 +2,8 @@
 
 class Wagon
   include Manufacturer
+
+  def initialize(some)
+    @_some = some
+  end
 end
