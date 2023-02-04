@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative './menu'
 require_relative './manufacturer'
 require_relative './instance_counter'
@@ -21,8 +23,10 @@ pas03 = PassengerTrain.new('pas03')
 car01 = CargoTrain.new('car01')
 car02 = CargoTrain.new('car02')
 car03 = CargoTrain.new('car03')
-rt1 = Route.new('Kyiv - Lutsk',st1,st4)
-rt2 = Route.new('Lutsk - Kyiv',st4,st1)
+rt1 = Route.new('Kyiv - Lutsk', st1, st4)
+rt1.add(st2, 2)
+rt1.add(st3, 3)
+rt2 = Route.new('Lutsk - Kyiv', st4, st1)
 pas01.change(rt1)
 pas02.change(rt1)
 pas03.change(rt1)

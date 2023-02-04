@@ -1,12 +1,12 @@
-module Store
+# frozen_string_literal: true
 
+module Store
   def self.included(base)
     base.extend ClassMethods
     base.include InstanceMethods
   end
 
   module ClassMethods
-
     def find(name)
       all.select { |object| object.name == name }
     end
@@ -23,7 +23,6 @@ module Store
   end
 
   module InstanceMethods
-
     def valid?
       validate!
     rescue StandartError

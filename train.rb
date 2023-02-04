@@ -1,13 +1,14 @@
-class Train
+# frozen_string_literal: true
 
+class Train
   include Manufacturer
   include InstanceCounter
   include Store
 
   attr_reader :station, :route, :speed, :wagons, :name
 
-  NAME_FORMAT = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i
-  
+  NAME_FORMAT = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i.freeze
+
   def initialize(name)
     @name = name
     validate!
@@ -20,9 +21,9 @@ class Train
   end
 
   def validate!
-    raise "Отсутствие номера поезда недопустимо!" if name == ''
-    raise "Несоответсвие формата номера поезда!" if name !~ NAME_FORMAT
-    raise "Такой номер поезда уже существует, выберите другой." if self.class.find(name) != []
+    raise 'Отсутствие номера поезда недопустимо!' if name == ''
+    raise 'Несоответсвие формата номера поезда!' if name !~ NAME_FORMAT
+    raise 'Такой номер поезда уже существует, выберите другой.' if self.class.find(name) != []
   end
 
   def speed_up(delta)
@@ -38,21 +39,21 @@ class Train
     @station = route.first
     take
   end
-  
+
   def forward
-    if @station != route.last
-      send
-      @station = next_station
-      take
-    end
+    return unless @station != route.last
+
+    send
+    @station = next_station
+    take
   end
 
   def backward
-    if @station != route.first
-      send
-      @station = prev_station
-      take
-    end
+    return unless @station != route.first
+
+    send
+    @station = prev_station
+    take
   end
 
   def prev_station
@@ -64,34 +65,36 @@ class Train
   end
 
   def next_station
-    @route.stations[index + 1] 
+    @route.stations[index + 1]
   end
 
   def delete(wagon)
     return if moving?
+
     wagons.delete(wagon) if wagons.include?(wagon)
   end
 
   def view_train
-    self.wagons.each.with_index(1) do |wagon, index|
+    wagons.each.with_index(1) do |wagon, index|
       puts "#{index} - - #{wagon.view_manufacturer}"
     end
   end
 
-  def view(&block)
-    wagons.each.with_index(1) do |wagon,index|
+  def view
+    wagons.each.with_index(1) do |wagon, index|
       yield(wagon, index) if block_given?
     end
   end
 
   protected
-  
+
   def moving?
     !speed.zero?
   end
 
   private
-  #используется только в этом классе
+
+  # используется только в этом классе
   def index
     @route.stations.index(@station)
   end
@@ -103,5 +106,4 @@ class Train
   def send
     @station.send(self)
   end
-
 end

@@ -1,0 +1,19 @@
+AllCops:
+  NewCops: enable
+Style/Documentation:
+  Enabled: false
+Style/ClassVars:
+  Exclude:
+    - instance_counter.rb
+Metrics/ClassLength:
+  Exclude:
+    - menu.rb
+Metrics/AbcSize:
+  Exclude:
+    - menu.rb
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - menu.rb
+Metrics/MethodLength:
+  Exclude:
+    - menu.rb
