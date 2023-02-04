@@ -192,13 +192,9 @@ class Menu
 
   def select_wagon
     train = select_train
-    train.wagons.each.with_index(1) do |wagon, index|
-      if wagon.is_a?(CargoWagon)
-        display_cargo(wagon, index2)
-      end
-      if wagon.is_a?(PassengerWagon)
-        display_passenger(wagon, index2)
-      end
+    train.wagons.each.with_index(1) do |wagon, _index|
+      display_cargo(wagon, index2) if wagon.is_a?(CargoWagon)
+      display_passenger(wagon, index2) if wagon.is_a?(PassengerWagon)
     end
     puts 'Введите порядковый номер вагона'
     train.wagons[gets.chomp.to_i - 1]

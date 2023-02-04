@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Display
-
   def display_cargo(wagon, index2)
     text = ['  ', index2, 'cargo',
             "свободно места: #{wagon.capacity - wagon.loaded_volume}",
