@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
 class PassengerWagon < Wagon
-  attr_reader :occupied_seats, :seats
+  attr_reader :occupied_seats, :seats, :occupied_seats
 
   def initialize(seats)
     super
     @seats = seats
     @occupied_seats = 0
+  end
+
+  def occupied_seats_history
+    history
   end
 
   def put

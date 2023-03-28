@@ -9,6 +9,10 @@ class CargoWagon < Wagon
     @loaded_volume = 0
   end
 
+  # def strong_attr_accessor(self.free_volume, self.free_volume.class)
+
+  # end
+
   def load(volume)
     raise 'Недостаточно свободного места' if (volume + loaded_volume) > @capacity
 
