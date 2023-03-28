@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PassengerWagon < Wagon
-  attr_reader :occupied_seats, :seats, :occupied_seats
+  attr_reader :occupied_seats, :seats
 
   def initialize(seats)
     super

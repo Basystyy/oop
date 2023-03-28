@@ -1,18 +1,15 @@
 # frozen_string_literal: true
 
 module Accessors
-  def strong_attr_accessor(*names)
-    names.each do |name|
-      var_name = "@#{name}".to_sym
-      define_method(name) { instance_variable_get(var_name) }
-      define_method("#{name}=".to_sym) do |value|
-        raise 'Недопустимый тип данных! Только целые числа!' if value.class != Integer
-
-        instance_variable_set(var_name, value)
-      end
+  def strong_attr_accessor(name, type)
+    var_name = "@#{name}".to_sym
+    define_method(name) { instance_variable_get(var_name) }
+    define_method("#{name}=".to_sym) do |value|
+      raise 'Недопустимый тип данных!' if value.class != type
+      instance_variable_set(var_name, value)
+    end
     rescue StandardError => e
       puts "#{e} Значение не присвоено!"
-    end
   end
 
   def attr_accessor_with_history(*names)
