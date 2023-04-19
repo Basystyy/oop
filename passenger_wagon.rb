@@ -9,10 +9,6 @@ class PassengerWagon < Wagon
     @occupied_seats = 0
   end
 
-  def occupied_seats_history
-    history
-  end
-
   def put
     raise 'Нет свободных мест.' if @occupied_seats == @seats
 
