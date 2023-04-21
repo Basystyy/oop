@@ -5,7 +5,7 @@ class Train
   include InstanceCounter
   include Store
 
-  attr_reader :station, :route, :speed, :wagons, :name
+  attr_reader :station, :route, :wagons, :name, :speed
 
   NAME_FORMAT = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i.freeze
 

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative './accessors'
 require_relative './display'
 require_relative './menu'
 require_relative './manufacturer'
